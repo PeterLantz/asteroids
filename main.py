@@ -46,16 +46,8 @@ def main():
         # this clears the screen
         screen.fill("black")
 
-        # this is where game logic happens, and where things get drawn too
+        # this is where game logic happens
         updatable.update(dt)
-        for object in drawable:
-            object.draw(screen)
-
-        # update the screen
-        pygame.display.flip()
-
-        # this both updates delta time and caps the framerate to 60
-        dt = clock.tick(60) / 1000
 
         for asteroid in asteroids:
             if asteroid.collides_with(player):
@@ -65,8 +57,18 @@ def main():
             for shot in shots:
                 if asteroid.collides_with(shot):
                     log_event("asteroid_shot")
-                    asteroid.kill()
+                    asteroid.split()
                     shot.kill()
+
+        # this is where things get drawn
+        for object in drawable:
+            object.draw(screen)
+
+        # update display
+        pygame.display.flip()
+
+        # this both updates delta time and caps the framerate to 60
+        dt = clock.tick(60) / 1000
 
 
 if __name__ == "__main__":
